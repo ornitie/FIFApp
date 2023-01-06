@@ -1,5 +1,5 @@
 import express from "express";
-import { FutbinService } from "./services/FutBinService";
+import { FutbinService } from "./resources/FutbinResource";
 const app = express();
 const port = 3000;
 
