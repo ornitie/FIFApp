@@ -1,9 +1,9 @@
-import axios from "axios";
+import { Player } from "../models/Player";
 
 export class FutbinService {
   public static async getPlayerStats() {
     return fetch(
-      "https://www.futbin.com/23/builderSearch?term={}&playerName=pablo%20roa&chem3=sub&chem0=sub&clubs=&leagues=&nations=&platform=ps4&builder_type=old&page=1&_=1671319720832",
+      "https://www.futbin.com/23/builderSearch?term={}&playerName=messi",
       {
         headers: {
           accept:
@@ -29,8 +29,20 @@ export class FutbinService {
     )
       .then((response) => response.json())
       .then((data) => {
-        console.log(data.data[0].PID);
-        return data;
+        const { PID, name, rat, priceMinPS, pos_all, nn, ln, cn } =
+          data.data[0];
+        const response: Player = new Player(
+          PID,
+          name,
+          rat,
+          priceMinPS,
+          pos_all.split(","),
+          nn,
+          ln,
+          cn
+        );
+        console.log(response.country);
+        return response;
       });
   }
 }
