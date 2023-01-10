@@ -1,37 +1,34 @@
 import { Player } from "../models/Player";
 import { Query, QueryMapper } from "../models/Query";
 
-const URL = "https://www.futbin.com/23/builderSearch";
+const config = require("../config");
 
 export class FutbinResource {
   public static async getPlayerStats(query: Query) {
     return fetch(this._mapRequest(query) + query.playerName, {
       headers: {
-        accept:
-          "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
-        "accept-language": "en-US,en;q=0.9,es;q=0.8",
-        "cache-control": "max-age=0",
-        "sec-ch-ua":
-          '"Not?A_Brand";v="8", "Chromium";v="108", "Microsoft Edge";v="108"',
-        "sec-ch-ua-mobile": "?0",
-        "sec-ch-ua-platform": '"macOS"',
-        "sec-fetch-dest": "document",
-        "sec-fetch-mode": "navigate",
-        "sec-fetch-site": "none",
-        "sec-fetch-user": "?1",
-        "upgrade-insecure-requests": "1",
-        cookie:
-          "PHPSESSID=fd5f713038ea881ebed259da31ecf30f; theme_player=true; comments=true; platform=ps4; ps=true; xbox=true; cross=true; pc=false; cookieconsent_status=dismiss; __cf_bm=EVtNc1yLm4Yi9zQ3MoATp1BGhwkFGbznzOh1Elh_eKQ-1671322734-0-AdQeTY+8alhhvx8lwsur2xqrZ+POYya3f7Dxqgv0j8Um6OMWoqYNm9hC01yJH11Cxj4s1abAQ5AOQiuSSIyVHq0=",
+        accept: config.ACCEPT,
+        "accept-language": config.ACCEPT_LANGUAGE,
+        "cache-control": config.CACHE_CONTROL,
+        "sec-ch-ua": config.SEC_CH_UA,
+        "sec-ch-ua-mobile": config.SEC_CH_UA_MOBILE,
+        "sec-ch-ua-platform": config.SEC_CH_UA_PLATFORM,
+        "sec-fetch-dest": config.SEC_FETCH_DEST,
+        "sec-fetch-mode": config.SEC_FETCH_MODE,
+        "sec-fetch-site": config.SEC_FETCH_SITE,
+        "sec-fetch-user": config.SEC_FETCH_USER,
+        "upgrade-insecure-requests": config.UPGRADE_INSECURE_REQUESTS,
+        cookie: config.COOKIE,
       },
-      referrerPolicy: "strict-origin-when-cross-origin",
-      body: null,
+      referrerPolicy: config.REFERRER_POLICY,
       method: "GET",
     })
       .then((response) => response.json())
       .then((data) => {
         const { PID, name, rat, priceMinPS, pos_all, nn, ln, cn } =
           data.data[0];
-        const response: Player = new Player(
+
+        return new Player(
           PID,
           name,
           rat,
@@ -41,8 +38,6 @@ export class FutbinResource {
           ln,
           cn
         );
-        console.log(response.country);
-        return response;
       });
   }
 
@@ -55,6 +50,6 @@ export class FutbinResource {
 
       return cumm;
     }, "");
-    return URL + `?term={${term}}&playerName=`;
+    return config.FUTBIN_URL + `?term={${term}}&playerName=`;
   }
 }
