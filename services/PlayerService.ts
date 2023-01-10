@@ -1,7 +1,7 @@
 import { FutbinResource } from "../resources/FutbinResource";
 
-function getPlayerByName(name: string) {
+function getPlayerByName(playerName: string) {
   return FutbinResource.getPlayerStats({
-    playerName: name,
+    playerName,
   });
 }
