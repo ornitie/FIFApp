@@ -1,10 +1,10 @@
 import express from "express";
-import { FutbinService } from "./resources/FutbinResource";
+import { FutbinResource } from "./resources/FutbinResource";
 const app = express();
 const port = 3000;
 
 app.get("/", async (req, res) => {
-  const x = await FutbinService.getPlayerStats();
+  const x = await FutbinResource.getPlayerStats();
 
   res.send(x);
 });
